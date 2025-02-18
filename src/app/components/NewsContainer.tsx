@@ -4,12 +4,10 @@ import { useEffect, useRef, useState } from "react";
 import NewsCard from "./NewsCard";
 import styles from "./NewsContainer.module.css";
 
-const [techData, setTechData] = useState(null);
-
 const mockNews = [
   {
     id: 1,
-    headline: "",
+    headline: "Tech News",
     summary:
       "Scientists announce a revolutionary advancement in quantum computing, promising to reshape the future of technology.",
     thumbnail: "/placeholder.svg?height=200&width=300",
@@ -52,13 +50,6 @@ const NewsContainer = () => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState(0);
 
-  useEffect(() => {
-    async function fetchNews() {
-      const response = await fetch("https://api.example.com/news");
-      const data = await response.json();
-      setTechData(data);
-    }
-  });
   useEffect(() => {
     const container = containerRef.current;
     if (!container) return;
