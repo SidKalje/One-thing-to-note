@@ -1,6 +1,6 @@
 import datetime
 from newsapi import NewsApiClient
-from config import NEWS_API_KEY
+from technology.config import NEWS_API_KEY
 
 api = NewsApiClient(api_key=f"{NEWS_API_KEY}")
 
@@ -24,7 +24,7 @@ preferred_sources = [
 
 def get_everything_headlines():
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime(
         "%Y-%m-%d"
     )
     source_headlines = api.get_everything(

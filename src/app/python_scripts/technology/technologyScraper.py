@@ -50,7 +50,7 @@ def get_everything_headlines():
         "%Y-%m-%d"
     )
     source_headlines = api.get_everything(
-        q="technology",
+        q="technology OR tech OR innovation OR 'artificial intelligence' OR AI OR 'machine learning' OR cybersecurity OR 'cloud computing' OR 'big data' OR blockchain OR 'internet of things' OR IoT OR 'virtual reality' OR VR OR 'augmented reality' OR AR OR 'quantum computing' OR startups",
         # sources="techcrunch, the-verge, wired, ars-technica, engadget, techradar, the-next-web",
         language="en",
         sort_by="relevancy",

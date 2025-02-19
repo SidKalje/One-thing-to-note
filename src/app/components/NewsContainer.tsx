@@ -4,51 +4,38 @@ import { useEffect, useRef, useState } from "react";
 import NewsCard from "./NewsCard";
 import styles from "./NewsContainer.module.css";
 
-const mockNews = [
-  {
-    id: 1,
-    headline: "Tech News",
-    summary:
-      "Scientists announce a revolutionary advancement in quantum computing, promising to reshape the future of technology.",
-    thumbnail: "/placeholder.svg?height=200&width=300",
-    category: "Tech",
-  },
-  {
-    id: 2,
-    headline: "Global Climate Summit Concludes",
-    summary: "World, leaders",
-    thumbnail: "/placeholder.svg?height=200&width=300",
-    category: "Politics",
-  },
-  {
-    id: 3,
-    headline: "New Art Installation Captivates City",
-    summary:
-      "A stunning interactive sculpture transforms the city's skyline, drawing crowds and sparking conversations.",
-    thumbnail: "/placeholder.svg?height=200&width=300",
-    category: "Entertainment",
-  },
-  {
-    id: 4,
-    headline: "Sports: Underdog Team Wins Championship",
-    summary:
-      "In a thrilling upset, the underdog team clinches the championship title, ending a 50-year drought.",
-    thumbnail: "/placeholder.svg?height=200&width=300",
-    category: "Sports",
-  },
-  {
-    id: 5,
-    headline: "Health: Breakthrough in Cancer Research",
-    summary:
-      "Researchers discover a promising new treatment that shows remarkable results in early-stage clinical trials.",
-    thumbnail: "/placeholder.svg?height=200&width=300",
-    category: "Health",
-  },
-];
+interface NewsItem {
+  summary: string;
+  headline: string;
+  source: string;
+  url: string;
+  image: string;
+  category: string;
+}
 
-const NewsContainer = () => {
+const NewsContainer: React.FC = () => {
   const containerRef = useRef<HTMLDivElement>(null);
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState<number>(0);
+  const [newsData, setNewsData] = useState<NewsItem[]>([]);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [error, setError] = useState<string>("");
+
+  useEffect(() => {
+    async function fetchNews() {
+      try {
+        const response = await fetch("http://127.0.0.1:8000/news-summary");
+
+        const data: NewsItem[] = await response.json();
+        setNewsData(data);
+      } catch (err) {
+        console.error("Error fetching news data:", err);
+        setError("Failed to fetch data");
+      } finally {
+        setLoading(false);
+      }
+    }
+    fetchNews();
+  }, []);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -63,34 +50,35 @@ const NewsContainer = () => {
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+
+  const numPages = Math.ceil(newsData.length / 2);
+
   return (
     <div className={styles.container} ref={containerRef}>
-      {Array.from(
-        { length: Math.ceil(mockNews.length / 2) },
-        (_, pageIndex) => (
-          <div
-            key={pageIndex}
-            className={`${styles.newsPage} ${
-              pageIndex === Math.floor(mockNews.length / 2)
-                ? styles.lastPage
-                : ""
-            }`}
-          >
-            {pageIndex === Math.floor(mockNews.length / 2) ? (
-              <NewsCard {...mockNews[pageIndex * 2]} />
-            ) : (
-              <>
-                <NewsCard {...mockNews[pageIndex * 2]} />
-                {mockNews[pageIndex * 2 + 1] && (
-                  <NewsCard {...mockNews[pageIndex * 2 + 1]} />
-                )}
-              </>
-            )}
-          </div>
-        )
-      )}
+      {Array.from({ length: numPages }, (_, pageIndex) => (
+        <div
+          key={pageIndex}
+          className={`${styles.newsPage} ${
+            pageIndex === numPages - 1 ? styles.lastPage : ""
+          }`}
+        >
+          {/* <NewsCard {...newsData[pageIndex]} /> */}
+          {pageIndex === numPages - 1 ? (
+            <NewsCard {...newsData[pageIndex * 2]} />
+          ) : (
+            <>
+              <NewsCard {...newsData[pageIndex * 2]} />
+              {newsData[pageIndex * 2 + 1] && (
+                <NewsCard {...newsData[pageIndex * 2 + 1]} />
+              )}
+            </>
+          )}
+        </div>
+      ))}
       <div className={styles.pageIndicator}>
-        {Array.from({ length: Math.ceil(mockNews.length / 2) }, (_, index) => (
+        {Array.from({ length: numPages }, (_, index) => (
           <div
             key={index}
             className={`${styles.dot} ${

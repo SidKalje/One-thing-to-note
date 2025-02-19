@@ -1,5 +1,5 @@
 from openai import OpenAI
-from config import OPEN_AI_API_KEY
+from technology.config import OPEN_AI_API_KEY
 
 client = OpenAI(api_key=f"{OPEN_AI_API_KEY}")
 

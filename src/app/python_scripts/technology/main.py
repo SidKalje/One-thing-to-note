@@ -1,7 +1,6 @@
-from news_api_client import get_everything_headlines, process_headlines
-from headline_selector import build_prompt, select_headline
-from article_processor import process_article
-from config import OPEN_AI_API_KEY, NEWS_API_KEY
+from technology.news_api_client import get_everything_headlines, process_headlines
+from technology.headline_selector import build_prompt, select_headline
+from technology.article_processor import process_article
 from newsapi import NewsApiClient
 from dotenv import load_dotenv
 import os

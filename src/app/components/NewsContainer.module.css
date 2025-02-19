@@ -2,7 +2,7 @@
   flex-grow: 1;
   overflow-y: scroll;
   scroll-snap-type: y mandatory;
-  height: calc(100vh - 60px); /* Adjust based on your header height */
+  height: calc(100vh - 60px);
 }
 
 .newsPage {
@@ -45,4 +45,3 @@
     grid-template-columns: 1fr;
   }
 }
-
