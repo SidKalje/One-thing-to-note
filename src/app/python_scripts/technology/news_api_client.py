@@ -24,7 +24,7 @@ preferred_sources = [
 
 def get_everything_headlines():
     today = datetime.datetime.now().strftime("%Y-%m-%d")
-    yesterday = (datetime.datetime.now() - datetime.timedelta(days=3)).strftime(
+    yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(
         "%Y-%m-%d"
     )
     source_headlines = api.get_everything(

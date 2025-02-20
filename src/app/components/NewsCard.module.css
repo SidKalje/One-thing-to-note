@@ -49,5 +49,7 @@
   color: #333;
   font-size: 0.9rem;
   flex-grow: 1;
+  max-height: 254px;
+  overflow-y: auto;
 }
 

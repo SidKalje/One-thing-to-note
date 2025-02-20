@@ -22,6 +22,8 @@ def read_root():
 def get_all_summary():
     try:
         summary, article = run_workflow()
+        if summary is None or article is None:
+            raise Exception("Valid article not found")
         tech_card = {
             "summary": summary,
             "headline": article[0],
@@ -69,6 +71,7 @@ def get_all_summary():
         # Return an array with the tech card first, then the placeholder cards.
         return [tech_card] + placeholders
     except Exception as e:
+        print("Error running workflow:", e)
         return {"error": f"Error running workflow: {e}"}
 
 

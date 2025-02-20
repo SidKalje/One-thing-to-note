@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import NewsCard from "./NewsCard";
 import styles from "./NewsContainer.module.css";
-
+import LoadingAnimation from "./LoadingAnimation";
 interface NewsItem {
   summary: string;
   headline: string;
@@ -13,15 +13,21 @@ interface NewsItem {
   category: string;
 }
 
-const NewsContainer: React.FC = () => {
+interface NewsContainerProps {
+  setLoading: (loading: boolean) => void;
+}
+
+const NewsContainer: React.FC<NewsContainerProps> = ({ setLoading }) => {
   const containerRef = useRef<HTMLDivElement>(null);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string>("");
 
+  const hasFetched = useRef(false);
   useEffect(() => {
     async function fetchNews() {
+      if (hasFetched.current) return;
+      hasFetched.current = true;
       try {
         const response = await fetch("http://127.0.0.1:8000/news-summary");
 
@@ -31,11 +37,12 @@ const NewsContainer: React.FC = () => {
         console.error("Error fetching news data:", err);
         setError("Failed to fetch data");
       } finally {
+        console.log("Setting loading to false");
         setLoading(false);
       }
     }
     fetchNews();
-  }, []);
+  }, [setLoading]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -50,8 +57,13 @@ const NewsContainer: React.FC = () => {
     return () => container.removeEventListener("scroll", handleScroll);
   }, []);
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>{error}</div>;
+  if (error) {
+    return (
+      <div>
+        <LoadingAnimation />
+      </div>
+    );
+  }
 
   const numPages = Math.ceil(newsData.length / 2);
 
