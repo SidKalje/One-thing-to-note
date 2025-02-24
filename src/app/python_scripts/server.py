@@ -21,58 +21,33 @@ def read_root():
 @app.get("/news-summary")
 def get_all_summary():
     try:
-        summary, article = run_workflow()
-        if summary is None or article is None:
-            raise Exception("Valid article not found")
-        tech_card = {
-            "summary": summary,
-            "headline": article[0],
-            "source": article[2],
-            "url": article[1],
-            "image": article[3],
-            "category": "technology",
-        }
-
-        placeholders = [
-            {
-                "headline": "Placeholder Politics",
-                "summary": "This is a placeholder for Politics news.",
-                "source": "Placeholder Source",
-                "url": "",
-                "image": "/placeholder.svg?height=200&width=300",
-                "category": "politics",
-            },
-            {
-                "headline": "Placeholder Entertainment",
-                "summary": "This is a placeholder for Entertainment news.",
-                "source": "Placeholder Source",
-                "url": "",
-                "image": "/placeholder.svg?height=200&width=300",
-                "category": "entertainment",
-            },
-            {
-                "headline": "Placeholder Sports",
-                "summary": "This is a placeholder for Sports news.",
-                "source": "Placeholder Source",
-                "url": "",
-                "image": "/placeholder.svg?height=200&width=300",
-                "category": "sports",
-            },
-            {
-                "headline": "Placeholder Health",
-                "summary": "This is a placeholder for Health news.",
-                "source": "Placeholder Source",
-                "url": "",
-                "image": "/placeholder.svg?height=200&width=300",
-                "category": "health",
-            },
+        cards = []
+        categories = [
+            "technology",
+            "politics",
+            "entertainment",
+            "sports",
+            "health",
+            "business",
         ]
+        for category in categories:
+            summary, article = run_workflow(category)
+            if summary is None or article is None:
+                raise Exception("Valid article not found for category " + category)
+            card = {
+                "summary": summary,
+                "headline": article[0],
+                "source": article[2],
+                "url": article[1],
+                "image": article[3],
+                "category": category,
+            }
+            cards.append(card)
 
-        # Return an array with the tech card first, then the placeholder cards.
-        return [tech_card] + placeholders
+        return cards
+
     except Exception as e:
         print("Error running workflow:", e)
-        return {"error": f"Error running workflow: {e}"}
 
 
 @app.get("/news-summary/technology")

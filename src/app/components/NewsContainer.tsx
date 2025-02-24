@@ -70,23 +70,15 @@ const NewsContainer: React.FC<NewsContainerProps> = ({ setLoading }) => {
   return (
     <div className={styles.container} ref={containerRef}>
       {Array.from({ length: numPages }, (_, pageIndex) => (
-        <div
-          key={pageIndex}
-          className={`${styles.newsPage} ${
-            pageIndex === numPages - 1 ? styles.lastPage : ""
-          }`}
-        >
-          {/* <NewsCard {...newsData[pageIndex]} /> */}
-          {pageIndex === numPages - 1 ? (
-            <NewsCard {...newsData[pageIndex * 2]} />
-          ) : (
+        <div key={pageIndex} className={styles.newsPage}>
+          {
             <>
               <NewsCard {...newsData[pageIndex * 2]} />
               {newsData[pageIndex * 2 + 1] && (
                 <NewsCard {...newsData[pageIndex * 2 + 1]} />
               )}
             </>
-          )}
+          }
         </div>
       ))}
       <div className={styles.pageIndicator}>

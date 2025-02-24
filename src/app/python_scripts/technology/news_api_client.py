@@ -5,8 +5,8 @@ from technology.config import NEWS_API_KEY
 api = NewsApiClient(api_key=f"{NEWS_API_KEY}")
 
 
-def get_top_headlines():
-    th = api.get_top_headlines(category="technology", language="en", country="us")
+def get_top_headlines(category="technology"):
+    th = api.get_top_headlines(category, language="en", country="us")
     return th
 
 
@@ -22,13 +22,13 @@ preferred_sources = [
 # top_headlines = get_top_headlines()
 
 
-def get_everything_headlines():
+def get_everything_headlines(searchQuery="technology"):
     today = datetime.datetime.now().strftime("%Y-%m-%d")
     yesterday = (datetime.datetime.now() - datetime.timedelta(days=1)).strftime(
         "%Y-%m-%d"
     )
     source_headlines = api.get_everything(
-        q="technology",
+        q=searchQuery,
         # sources="techcrunch, the-verge, wired, ars-technica, engadget, techradar, the-next-web",
         language="en",
         sort_by="relevancy",

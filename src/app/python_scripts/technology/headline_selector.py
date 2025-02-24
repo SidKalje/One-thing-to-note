@@ -4,10 +4,10 @@ from technology.config import OPEN_AI_API_KEY
 client = OpenAI(api_key=f"{OPEN_AI_API_KEY}")
 
 
-def build_prompt(processed_headlines):
+def build_prompt(processed_headlines, category="techology"):
     prompt = (
-        "I have the following headlines for today's technology news. "
-        "Please choose the best and most technologically informative headline from the list and "
+        "I have the following headlines for today's " + category + " news. "
+        "Please choose the best and most informative headline from the list and "
         "provide only its index (starting at 1) along with a short explanation. DO NOT put anything but the index (starting at 1). "
         "For example, your output should look like this: 4. <HeadlineTextHere>. Here are the headlines:\n\n"
     )

@@ -60,9 +60,9 @@ import os
 load_dotenv()
 
 
-def run_workflow():
+def run_workflow(category="technology"):
     # Get headlines from the news API
-    source_headline_titles, source_headlines = get_everything_headlines()
+    source_headline_titles, source_headlines = get_everything_headlines(category)
     processed_headlines = process_headlines(source_headlines)
 
     developer_msg = (
@@ -82,7 +82,7 @@ def run_workflow():
 
         # Build the prompt for headline selection using the current processed_headlines
         try:
-            prompt = build_prompt(processed_headlines)
+            prompt = build_prompt(processed_headlines, category)
             print("Prompt: ", prompt)
         except Exception as e:
             raise Exception("Error building prompt:", e)
