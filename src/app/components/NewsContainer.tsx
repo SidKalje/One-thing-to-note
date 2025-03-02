@@ -1,6 +1,12 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import { Swiper, SwiperSlide } from "swiper/react";
+import { Pagination, Navigation } from "swiper/modules";
+import { mockNewsData } from "./mockData";
+import "swiper/css";
+import "swiper/css/pagination";
+import "swiper/css/navigation";
 import NewsCard from "./NewsCard";
 import styles from "./NewsContainer.module.css";
 import LoadingAnimation from "./LoadingAnimation";
@@ -19,12 +25,17 @@ interface NewsContainerProps {
 
 const NewsContainer: React.FC<NewsContainerProps> = ({ setLoading }) => {
   const containerRef = useRef<HTMLDivElement>(null);
+  const mockData = true;
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [newsData, setNewsData] = useState<NewsItem[]>([]);
   const [error, setError] = useState<string>("");
-
   const hasFetched = useRef(false);
   useEffect(() => {
+    if (mockData === true) {
+      setNewsData(mockNewsData);
+      setLoading(false);
+      return;
+    }
     async function fetchNews() {
       if (hasFetched.current) return;
       hasFetched.current = true;
@@ -41,6 +52,7 @@ const NewsContainer: React.FC<NewsContainerProps> = ({ setLoading }) => {
         setLoading(false);
       }
     }
+
     fetchNews();
   }, [setLoading]);
 
@@ -65,32 +77,25 @@ const NewsContainer: React.FC<NewsContainerProps> = ({ setLoading }) => {
     );
   }
 
-  const numPages = Math.ceil(newsData.length / 2);
+  // const numPages = Math.ceil(newsData.length / 2);
+  const numPages = newsData.length;
 
   return (
     <div className={styles.container} ref={containerRef}>
-      {Array.from({ length: numPages }, (_, pageIndex) => (
-        <div key={pageIndex} className={styles.newsPage}>
-          {
-            <>
-              <NewsCard {...newsData[pageIndex * 2]} />
-              {newsData[pageIndex * 2 + 1] && (
-                <NewsCard {...newsData[pageIndex * 2 + 1]} />
-              )}
-            </>
-          }
-        </div>
-      ))}
-      <div className={styles.pageIndicator}>
-        {Array.from({ length: numPages }, (_, index) => (
-          <div
-            key={index}
-            className={`${styles.dot} ${
-              index === currentPage ? styles.active : ""
-            }`}
-          />
+      <Swiper
+        modules={[Pagination, Navigation]}
+        slidesPerView={1}
+        loop={true}
+        pagination={{ clickable: true }}
+        navigation
+        style={{ height: "100%" }}
+      >
+        {newsData.map((article, index) => (
+          <SwiperSlide key={index}>
+            <NewsCard {...article} />
+          </SwiperSlide>
         ))}
-      </div>
+      </Swiper>
     </div>
   );
 };

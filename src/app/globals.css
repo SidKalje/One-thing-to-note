@@ -4,6 +4,10 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Noticia+Text:ital,wght@0,400;0,700;1,400;1,700&family=Sono&display=swap');
 
+@import 'swiper/css';
+@import 'swiper/css/pagination';
+@import 'swiper/css/navigation';
+
 :root {
   --deep-blue: #1f3a93;
   --white: #ffffff;

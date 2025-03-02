@@ -1,55 +1,74 @@
-.card {
-  background-color: var(--white);
-  border-radius: 12px;
-  overflow: hidden;
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+/* Wrapper for the entire card and category tab */
+.wrapper {
+  margin: 1rem auto;
+  width: 90%;
+  /* Remove a fixed height here if you want the card to size based on its content */
   box-shadow: 0 4px 6px rgba(31, 58, 147, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-.card:hover {
+.wrapper:hover {
   transform: scale(1.02);
   box-shadow: 0 6px 8px rgba(31, 58, 147, 0.2);
 }
 
-.category {
+/* Category tab above the card */
+.categoryTab {
+  width: 100%;
+  background-color: #1F3A93;
   color: #ffffff;
-  padding: 0.5rem 1rem;
+  padding: 0.5rem;
+  text-align: center;
   font-weight: bold;
   text-transform: uppercase;
-  font-size: 0.8rem;
+  border-top-left-radius: 12px;
+  border-top-right-radius: 12px;
 }
 
-.thumbnailContainer {
-  position: relative;
-  width: 100%;
-  max-width: 800px;
-  max-height:400px;
-  height: 50%;
-  padding-top: 56.25%; /* 16:9 aspect ratio */
-}
-
-.content {
-  padding: 1rem;
-  flex-grow: 1;
+/* Card container for image, headline, and summary */
+.card {
   display: flex;
   flex-direction: column;
+  background-color: var(--white);
+  overflow: hidden;
+  /* For example: height: 400px; */
+  box-shadow: 0 4px 6px rgba(31, 58, 147, 0.1);
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
+/* Thumbnail container as a horizontal banner at the top */
+.thumbnailContainer {
+  position: relative;
+  flex: 0 0 150px;   /* Fixed height of 150px */
+  width: 100%;
+  overflow: hidden;
+}
+
+/* Content container that takes the remaining space */
+.content {
+  flex: 1;
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* Headline style */
 .headline {
-  color: #1f3a93;
   font-size: 1.25rem;
-  margin-bottom: 0.5rem;
   font-weight: bold;
+  margin: 0;
+  color: var(--deep-blue);
 }
 
+.headline:hover{
+  color: #1F3A93;
+}
+/* Summary area that scrolls if necessary */
 .summary {
+  flex: 1;                /* Takes available space */
+  font-size: 1rem;
   color: #333;
-  font-size: 0.9rem;
-  flex-grow: 1;
-  max-height: 254px;
-  overflow-y: auto;
+  overflow-y: auto;       /* Scroll if content is too long */
+  padding-right: 0.5rem;  /* Optional: add space for scrollbar */
 }
-
